@@ -1,0 +1,73 @@
+import pepon.*
+test "Pepón estado inicial está cansado" {
+  pepon.setEnergy(30)
+  assert.that(pepon.cansado())
+}
+
+test "Pepón come alpiste y deja de estar cansado" {
+  pepon.setEnergy(30)
+
+  pepon.comer(alpiste)
+  assert.equals(42.5, pepon.energy())  // 30 + 25/2 = 42.5
+  assert.that(!pepon.cansado())
+}
+
+test "Pepón vuela y queda con poca energía" {
+  pepon.setEnergy(30)
+
+  pepon.volar(3)
+  assert.equals(4, pepon.energy())  // 30 - 20 - 6
+  assert.that(pepon.cansado())
+}
+
+test "Pepón come manzana" {
+  pepon.setEnergy(30)
+
+  manzana.modificarMaduramiento(2) // 40 calorías
+  pepon.comer(manzana)
+
+  assert.equals(50, pepon.energy()) // 30 + 40/2
+  assert.that(!pepon.cansado())
+}
+test "Rebeca alimenta a pepita" {
+  pepita.setEnergy(100)
+  rebeca.cambiarAve(pepita)
+
+  rebeca.alimentar(alpiste)
+
+  assert.equals(125, pepita.energy())
+  assert.equals(1, rebeca.cenas())
+}
+test "Rebeca alimenta varias veces" {
+  pepita.setEnergy(100)
+  rebeca.cambiarAve(pepita)
+
+  rebeca.alimentar(alpiste)
+  rebeca.alimentar(alpiste)
+
+  assert.equals(150, pepita.energy())
+  assert.equals(2, rebeca.cenas())
+}
+test "Rebeca cambia de ave y reinicia cenas" {
+  pepita.setEnergy(100)
+  pepon.setEnergy(30)
+
+  rebeca.cambiarAve(pepita)
+  rebeca.alimentar(alpiste)
+  rebeca.alimentar(alpiste)
+
+  assert.equals(2, rebeca.cenas())
+
+  rebeca.cambiarAve(pepon)
+
+  assert.equals(0, rebeca.cenas())
+}
+test "Rebeca alimenta a pepon" {
+  pepon.setEnergy(30)
+  rebeca.cambiarAve(pepon)
+
+  rebeca.alimentar(alpiste)
+
+  assert.equals(42.5, pepon.energy())
+  assert.equals(1, rebeca.cenas())
+}
